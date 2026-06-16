@@ -1,7 +1,15 @@
 CC = g++
-CFLAGS = -std=c++17
-SRC = main.cpp
+
+CFLAGS = -std=c++17 -O2
+
+SRC = \
+main.cpp \
+utils/gap_instance.cpp \
+utils/io.cpp \
+utils/algorithm_runner.cpp
+
 OBJ = $(SRC:.cpp=.o)
+
 EXEC = gap_simulator
 
 all: $(EXEC)
@@ -14,3 +22,6 @@ $(EXEC): $(OBJ)
 
 clean:
 	rm -f $(OBJ) $(EXEC)
+
+run:
+	./$(EXEC)
