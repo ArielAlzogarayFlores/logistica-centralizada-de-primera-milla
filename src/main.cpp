@@ -28,10 +28,10 @@ int main(int argc,char** argv){
         GAPInstance instance = read_instance(input_file);
         std::vector<int> N(instance.n);
         std::vector<int> M(instance.m);
-        for(int i=0;i<instance.n;i++) N[i]=i;
-        for(int i=0;i<instance.m;i++) M[i]=i;
-        int cmax=c_max(N,M,instance.costos);
-        auto solution= run_algorithm(algorithm,instance,cmax);
+        for(int i=0; i<instance.n; i++) N[i]=i;
+        for(int i=0; i<instance.m; i++) M[i]=i;
+        int cmax = c_max(N,M,instance.costos);
+        auto solution = run_algorithm(algorithm,instance,cmax);
         save_solution(output_file, solution);
 
         std::cout

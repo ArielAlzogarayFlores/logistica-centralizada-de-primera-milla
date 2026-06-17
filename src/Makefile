@@ -6,7 +6,8 @@ SRC = \
 main.cpp \
 utils/gap_instance.cpp \
 utils/io.cpp \
-utils/algorithm_runner.cpp
+utils/algorithm_runner.cpp \
+heuristicas/heuristica_1.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

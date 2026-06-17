@@ -1,12 +1,12 @@
 #ifndef IO_H
 #define IO_H
 
-#include <vector>
 #include <string>
+#include "solution.h"
 
 void save_solution(
     const std::string& output,
-    const std::vector<std::vector<int>>& solution
+    const Solution& solution
 );
 
 #endif

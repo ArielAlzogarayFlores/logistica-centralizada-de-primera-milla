@@ -6,14 +6,14 @@
 
 struct GAPInstance {
 
-    int m; // agentes / depositos
-    int n; // trabajos / vendedores
+    int m; // depositos
+    int n; // vendedores
 
     // costos[i][j]
     std::vector<std::vector<int>> costos;
 
-    // recursos[i][j]
-    std::vector<std::vector<int>> recursos;
+    // demandas[i][j]
+    std::vector<std::vector<int>> demandas;
 
     // capacidad[i]
     std::vector<int> capacidades;

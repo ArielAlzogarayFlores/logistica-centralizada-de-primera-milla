@@ -1,5 +1,4 @@
 #include "gap_instance.h"
-
 #include <fstream>
 #include <stdexcept>
 
@@ -14,7 +13,7 @@ GAPInstance read_instance(const std::string& filename){
         instance.m,
         std::vector<int>(instance.n)
     );
-    instance.recursos.resize(
+    instance.demandas.resize(
         instance.m,
         std::vector<int>(instance.n)
     );
@@ -30,7 +29,7 @@ GAPInstance read_instance(const std::string& filename){
     // recursos
     for(int i=0;i<instance.m;i++){
         for(int j=0;j<instance.n;j++){
-            file >> instance.recursos[i][j];
+            file >> instance.demandas[i][j];
         }
     }
 

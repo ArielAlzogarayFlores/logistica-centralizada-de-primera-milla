@@ -1,15 +1,15 @@
 #include "algorithm_runner.h"
-
+#include "../heuristicas/heuristica_1.h"
 #include <stdexcept>
 
 // incluir algoritmos reales
-std::vector<std::vector<int>> run_algorithm(
+Solution run_algorithm(
     const std::string& algorithm,
     const GAPInstance& instance,
     int cmax
 ){
-    if(algorithm=="heuristica1"){
-        // return heuristica1(instance,cmax);
+    if(algorithm=="heuristica_1"){
+        return heuristica_1(instance,cmax);
     }
     if(algorithm=="local1"){
         // return local_search(instance,cmax);
