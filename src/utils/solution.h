@@ -13,7 +13,7 @@ struct Solution {
     int vendedores_sin_asignar;
 
     // para determinar si la solución es parcial o no
-    bool parcial(const Solution& solucion) const {
+    bool parcial() const {
         return vendedores_sin_asignar > 0;
     }
 };
