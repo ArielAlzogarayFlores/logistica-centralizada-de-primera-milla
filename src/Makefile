@@ -7,7 +7,8 @@ main.cpp \
 utils/gap_instance.cpp \
 utils/io.cpp \
 utils/algorithm_runner.cpp \
-heuristicas/heuristica_1.cpp
+heuristicas/heuristica_1.cpp \
+busqueda-local/operador_1.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
