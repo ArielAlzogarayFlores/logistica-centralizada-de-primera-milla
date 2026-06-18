@@ -43,7 +43,7 @@ Solution heuristica_1(const GAPInstance& instance, int cmax) {
 
             // actualizamos las capacidades residuales y el costo acumulado
             capacidades_residuales[deposito_minimo] = capacidades_residuales[deposito_minimo] - instance.demandas[deposito_minimo][j];
-            solucion.costo_total += instance.demandas[deposito_minimo][j];
+            solucion.costo_total += instance.costos[deposito_minimo][j];
 
         } else { // en caso contrario se lo cuenta al vendedor j como un vendedor sin asignar
             solucion.vendedores_sin_asignar++;

@@ -15,8 +15,9 @@ Solution operador_1(const GAPInstance& instance, int cmax) {
             // deben ser vendedores distintos
             for (int j2 = j1+1; j2 < instance.n && not mejora_hallada; j2++) {
                 // deben ser vendedores asignados a depósitos distintos
-                if (solucion.asignaciones_vendedores[j1] == solucion.asignaciones_vendedores[j2]) continue;
-
+                if (solucion.asignaciones_vendedores[j1] == solucion.asignaciones_vendedores[j2]
+                    || solucion.asignaciones_vendedores[j1] == -1
+                    || solucion.asignaciones_vendedores[j2] == -1) continue;
                 // actualizamos la solución siempre que el swap resulte en una reducción de costos factible
                 if (swap_op(solucion, instance, j1, j2)) {
                     mejora_hallada = true;

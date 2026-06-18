@@ -9,6 +9,7 @@ utils/io.cpp \
 utils/algorithm_runner.cpp \
 heuristicas/heuristica_1.cpp \
 heuristicas/heuristica_2.cpp \
+heuristicas/heuristica_5.cpp\
 busqueda-local/operador_1.cpp
 
 

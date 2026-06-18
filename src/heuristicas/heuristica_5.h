@@ -1,8 +1,9 @@
-//
-// Created by arotu on 18/6/26.
-//
-
 #ifndef SRC_HEURISTICA_5_H
 #define SRC_HEURISTICA_5_H
 
-#endif //SRC_HEURISTICA_5_H
+#include "../utils/gap_instance.h"
+#include "../utils/solution.h"
+
+Solution heuristica_5(const GAPInstance &instance, int cmax);
+
+#endif

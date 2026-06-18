@@ -49,7 +49,7 @@ Solution heuristica_2 (const GAPInstance& instance, int cmax) {
 
                 // actualizamos las capacidades residuales, el costo acumulado y ponemos al vendedor j como no disponible
                 capacidades_residuales[i] = capacidades_residuales[i] - instance.demandas[i][vendedor_minimo];
-                solucion.costo_total += instance.demandas[i][vendedor_minimo];
+                solucion.costo_total += instance.costos[i][vendedor_minimo];
                 vendedores_disponibles[vendedor_minimo] = false;
             }
             else { // en caso contrario no se habría hallado un vendedor mínimo por lo que el depósito se llenó o no hay vendedores disponibles
@@ -60,7 +60,7 @@ Solution heuristica_2 (const GAPInstance& instance, int cmax) {
 
     // Actualizamos los vendedores sin asignar
     for (int j=0; j<vendedores_disponibles.size(); j++) {
-        if (not vendedores_disponibles[j]) {
+        if (vendedores_disponibles[j]) {
             solucion.vendedores_sin_asignar++;
             asignaciones_vendedores[j] = -1;
         }
