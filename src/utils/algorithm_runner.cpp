@@ -2,7 +2,6 @@
 #include "../heuristicas/heuristica_1.h"
 #include <stdexcept>
 
-// incluir algoritmos reales
 Solution run_algorithm(
     const std::string& algorithm,
     const GAPInstance& instance,

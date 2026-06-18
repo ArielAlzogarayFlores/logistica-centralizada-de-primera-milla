@@ -3,10 +3,12 @@
 #include <stdexcept>
 
 GAPInstance read_instance(const std::string& filename){
+    // iniciamos un flujo para escribir el archivo sobre la ruta filename
     std::ifstream file(filename);
     if(!file.is_open()){
         throw std::runtime_error("No se pudo abrir el archivo.");
     }
+    // creamos una instancia de GAP a partir del parsing sobre el archivo leído
     GAPInstance instance;
     file >> instance.m >> instance.n;
     instance.costos.resize(
@@ -26,7 +28,7 @@ GAPInstance read_instance(const std::string& filename){
         }
     }
 
-    // recursos
+    // demandas
     for(int i=0;i<instance.m;i++){
         for(int j=0;j<instance.n;j++){
             file >> instance.demandas[i][j];
@@ -42,7 +44,7 @@ GAPInstance read_instance(const std::string& filename){
 }
 
 
-int c_max(
+int costo_max(
     const std::vector<int>& N,
     const std::vector<int>& M,
     const std::vector<std::vector<int>>& costos

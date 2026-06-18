@@ -6,6 +6,7 @@
 #include "utils/algorithm_runner.h"
 
 int main(int argc,char** argv){
+    // si recibimos menos de 4 argumentos imprimimos modo de uso por terminal
     if(argc < 4){
         std::cout
             << "Uso:\n"
@@ -15,7 +16,6 @@ int main(int argc,char** argv){
             << "<algoritmo>\n";
         return 1;
     }
-
     try{
         std::string input_file=argv[1];
         std::string output_file= argv[2];
@@ -30,7 +30,7 @@ int main(int argc,char** argv){
         std::vector<int> M(instance.m);
         for(int i=0; i<instance.n; i++) N[i]=i;
         for(int i=0; i<instance.m; i++) M[i]=i;
-        int cmax = c_max(N,M,instance.costos);
+        int cmax = costo_max(N,M,instance.costos);
         auto solution = run_algorithm(algorithm,instance,cmax);
         save_solution(output_file, solution);
 
@@ -46,7 +46,7 @@ int main(int argc,char** argv){
             << output_file
             << "\n";
     }
-
+    // si ocurre un error lo imprimimos en terminal
     catch(std::exception& e){
         std::cerr
             << "ERROR: "

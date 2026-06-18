@@ -5,10 +5,13 @@ void save_solution(
     const std::string& output,
     const Solution& solution
 ){
+    // siempre guardamos las salidas en la carpeta /output
     const std::string output_dir = "./output";
     const std::string output_file = output_dir + "/" + output;
-    std::ofstream file(output_file);
     std::vector<std::vector<int>> asignaciones = solution.asignaciones;
+    // iniciamos un flujo para escribir el archivo sobre la ruta output_file
+    std::ofstream file(output_file);
+    // escribimos en el archivo de salida los datos de salida y las asignaciones que resolvio el algoritmo
     file << "Costo total: " << solution.costo_total << "\n";
     file << "Solución parcial: " << (solution.parcial() ? "SÍ" : "NO") << "\n";
     if (solution.parcial()) {

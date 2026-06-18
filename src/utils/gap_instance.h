@@ -21,7 +21,7 @@ struct GAPInstance {
 
 GAPInstance read_instance(const std::string& filename);
 
-int c_max(
+int costo_max(
     const std::vector<int>& N,
     const std::vector<int>& M,
     const std::vector<std::vector<int>>& costos
