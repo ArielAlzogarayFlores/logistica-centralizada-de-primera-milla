@@ -8,4 +8,4 @@ Solution operador_1(const GAPInstance& instance, int cmax);
 
 bool swap_op(Solution& solucion, const GAPInstance& instance, int j1, int j2);
 
-#endif //SRC_OPERADOR_1_H
+#endif

@@ -2,51 +2,76 @@
 #include "heuristica_2.h"
 #include <vector>
 
-Solution heuristica_2(const GAPInstance &instance, int cmax)
-{
+Solution heuristica_2 (const GAPInstance& instance, int cmax) {
+    // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
     solucion.costo_total = 0;
+
+    // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
+
+    // en paralelo hacemos algo similar pero para los vendedores con sus depósitos asignados
+    std::vector<int> asignaciones_vendedores(instance.n);
+
+    // creamos una copia de las capacidades de la instancia de GAP provista
     std::vector<int> capacidades_residuales = instance.capacidades;
-    std::vector<int> marcado(instance.n, 0);
 
-    int cota_superior = instance.n * instance.m;
-    int contador = 0;
+    // creamos un vector vendedores_disponibles para saber qué vendedores aún no han sido asignados
+    std::vector<bool> vendedores_disponibles(instance.n, true);
 
-    while (contador <= cota_superior)
-    {
-        for (int i = 0; i < instance.m; i++)
-        {
-            int n_min = -1;
-            int c_min = INT_MAX;
-            for (int j = 0; j < instance.n; j++)
-            {
-                if (c_min > instance.costos[i][j] && capacidades_residuales[i] >= instance.demandas[i][j] && marcado[j] == 0)
-                {
-                    n_min = j;
-                    c_min = instance.costos[i][j];
+    // por cada depósito i buscamos los j's vendedores disponibles y asignables más cercanos hasta llenar el depósito
+    for (int i=0; i<instance.m; i++) {
+        // mientras halla capacidad
+        bool asignacion_posible = true;
+        while (asignacion_posible) {
+            // empezamos sin vendedor mínimo
+            int vendedor_minimo = -1;
+
+            // consecuencia de lo anterior: el costo (distancia) es infinito
+            int costo_minimo = INT_MAX;
+
+            for (int j=0; j<vendedores_disponibles.size(); j++) {
+                // verificamos que sea el vendedor disponible más cercano y que sea asignable (o sea, factible)
+                if (vendedores_disponibles[j] && instance.costos[i][j] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][j] >= 0) {
+                    // si verifica la condición se actualiza el vendedor mínimo de i y el costo asociado
+                    vendedor_minimo = j;
+                    costo_minimo = instance.costos[i][j];
                 }
             }
-            if (n_min != -1)
-            {
-                asignaciones[i].push_back(n_min);
-                capacidades_residuales[i] = capacidades_residuales[i] - instance.demandas[i][n_min];
-                marcado[n_min] = 1;
+
+            // si tras evaluar sobre todos los vendedores disponibles, el depósito i halla un vendedor asignable j más cercano,
+            // se toma la decisión de asignarlo a dicho vendedor
+            if (vendedor_minimo != -1) {
+                // concretamos la asignación
+                asignaciones[i].push_back(vendedor_minimo);
+                asignaciones_vendedores[vendedor_minimo] = i;
+
+                // actualizamos las capacidades residuales, el costo acumulado y ponemos al vendedor j como no disponible
+                capacidades_residuales[i] = capacidades_residuales[i] - instance.demandas[i][vendedor_minimo];
+                solucion.costo_total += instance.demandas[i][vendedor_minimo];
+                vendedores_disponibles[vendedor_minimo] = false;
+            }
+            else { // en caso contrario no se habría hallado un vendedor mínimo por lo que el depósito se llenó o no hay vendedores disponibles
+                asignacion_posible = false;
             }
         }
-        contador += 1;
     }
 
-    for (int j = 0; j < instance.n; j++)
-    {
-        if (marcado[j] == 0)
-        {
-            solucion.vendedores_sin_asignar += 1;
+    // Actualizamos los vendedores sin asignar
+    for (int j=0; j<vendedores_disponibles.size(); j++) {
+        if (not vendedores_disponibles[j]) {
+            solucion.vendedores_sin_asignar++;
+            asignaciones_vendedores[j] = -1;
         }
     }
 
+    // completamos la solución
     solucion.asignaciones = asignaciones;
-    solucion.costo_total += (3 * cmax) * solucion.vendedores_sin_asignar;
+    solucion.asignaciones_vendedores = asignaciones_vendedores;
+    solucion.capacidades_residuales = capacidades_residuales;
+
+    // aplicamos la penalización (si es que la hay)
+    solucion.costo_total += (3*cmax)*solucion.vendedores_sin_asignar;
     return solucion;
 }

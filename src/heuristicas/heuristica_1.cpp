@@ -34,7 +34,7 @@ Solution heuristica_1(const GAPInstance& instance, int cmax) {
             }
         }
 
-        // si tras evaluar sobre todos los depósitos el vendedor j se halla un depósito asignable i más cercano,
+        // si tras evaluar sobre todos los depósitos, el vendedor j halla un depósito asignable i más cercano,
         // se toma la decisión de asignarlo a dicho depósito
         if (deposito_minimo != -1) {
             // concretamos la asignación
