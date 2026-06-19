@@ -1,7 +1,7 @@
 #include "operador_2.h"
 #include "../heuristicas/heuristica_2.h"
 
-Solution operador_2(const GAPInstance& instance, int cmax) {
+Solution operador_2(const GAPInstance& instance, double cmax) {
     // generemos una solución factible
     Solution solucion = heuristica_2(instance, cmax);
 

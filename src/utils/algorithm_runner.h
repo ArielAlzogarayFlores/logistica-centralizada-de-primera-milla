@@ -7,7 +7,7 @@
 Solution run_algorithm(
     const std::string& algorithm,
     const GAPInstance& instance,
-    int cmax
+    double cmax
 );
 
 #endif

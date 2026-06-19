@@ -5,8 +5,8 @@
 #include "../utils/solution.h"
 #include <vector>
 
-Solution heuristica_3(const GAPInstance &instance, int cmax);
+Solution heuristica_3(const GAPInstance &instance, double cmax);
 
-std::vector<float> calcular_promedios(const GAPInstance &instance, const std::vector<int>& capacidades_residuales, const std::vector<bool>& vendedores_disponibles);
+std::vector<double> calcular_promedios(const GAPInstance &instance, const std::vector<double>& capacidades_residuales, const std::vector<bool>& vendedores_disponibles);
 
 #endif

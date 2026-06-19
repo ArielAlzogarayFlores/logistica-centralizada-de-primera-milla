@@ -1,12 +1,12 @@
-#include <limits.h>
+#include <limits>
 #include "heuristica_1.h"
 #include <vector>
 
-Solution heuristica_1(const GAPInstance& instance, int cmax) {
+Solution heuristica_1(const GAPInstance& instance, double cmax) {
     // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
-    solucion.costo_total = 0;
+    solucion.costo_total = 0.0;
 
     // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
@@ -15,7 +15,7 @@ Solution heuristica_1(const GAPInstance& instance, int cmax) {
     std::vector<int> asignaciones_vendedores(instance.n);
 
     // creamos una copia de las capacidades de la instancia de GAP provista
-    std::vector<int> capacidades_residuales = instance.capacidades;
+    std::vector<double> capacidades_residuales = instance.capacidades;
 
     // por cada vendedor j buscamos el depósito asignable i más cercano
     for (int j = 0; j<instance.n; j++) {
@@ -23,11 +23,11 @@ Solution heuristica_1(const GAPInstance& instance, int cmax) {
         int deposito_minimo = -1;
 
         // consecuencia de lo anterior: el costo (distancia) es infinito
-        int costo_minimo = INT_MAX;
+        double costo_minimo = std::numeric_limits<double>::infinity();
 
         for (int i=0; i<instance.m; i++) {
             // verificamos que sea el depósito más cercano y que sea asignable (o sea, factible)
-            if (instance.costos[i][j] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][j] >= 0) {
+            if (instance.costos[i][j] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][j] >= 0.0) {
                 // si verifica la condición se actualiza el depósito mínimo de j y el costo asociado
                 deposito_minimo = i;
                 costo_minimo = instance.costos[i][j];

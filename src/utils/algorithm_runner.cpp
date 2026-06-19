@@ -11,7 +11,7 @@
 Solution run_algorithm(
     const std::string& algorithm,
     const GAPInstance& instance,
-    int cmax
+    double cmax
 ){
     if(algorithm=="heuristica_1"){
         return heuristica_1(instance,cmax);

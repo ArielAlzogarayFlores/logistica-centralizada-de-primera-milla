@@ -7,7 +7,7 @@ struct Solution {
     // los depósitos con los vendedores asignados
     std::vector<std::vector<int>> asignaciones;
 
-    int costo_total;
+    double costo_total;
 
     // cantidad de vendedores sin asignar
     int vendedores_sin_asignar;
@@ -16,7 +16,7 @@ struct Solution {
     std::vector<int> asignaciones_vendedores;
 
     // capacidades residuales de cada depósito
-    std::vector<int> capacidades_residuales;
+    std::vector<double> capacidades_residuales;
 
     // para determinar si la solución es parcial o no
     bool parcial() const {

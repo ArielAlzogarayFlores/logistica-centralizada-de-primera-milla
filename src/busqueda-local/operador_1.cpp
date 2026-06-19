@@ -1,7 +1,7 @@
 #include "operador_1.h"
 #include "../heuristicas/heuristica_2.h"
 
-Solution operador_1(const GAPInstance& instance, int cmax) {
+Solution operador_1(const GAPInstance& instance, double cmax) {
     // generemos una solución factible
     Solution solucion = heuristica_2(instance, cmax);
 
@@ -32,8 +32,8 @@ Solution operador_1(const GAPInstance& instance, int cmax) {
 }
 
 bool swap_op(Solution &solucion, const GAPInstance& instance, int j1, int j2) {
-    int i1 = solucion.asignaciones_vendedores[j1];
-    int i2 = solucion.asignaciones_vendedores[j2];
+    const int i1 = solucion.asignaciones_vendedores[j1];
+    const int i2 = solucion.asignaciones_vendedores[j2];
 
     // buscamos las posiciones de j1 y j2 en las asignaciones dentro de sus respectivos depósitos i1 e i2
     int pos_j1 = -1;

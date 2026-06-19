@@ -4,6 +4,6 @@
 #include "../utils/gap_instance.h"
 #include "../utils/solution.h"
 
-Solution heuristica_4(const GAPInstance &instance, int cmax);
+Solution heuristica_4(const GAPInstance &instance, double cmax);
 
 #endif

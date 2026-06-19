@@ -1,12 +1,12 @@
-#include <limits.h>
+#include <limits>
 #include "heuristica_5.h"
 #include <vector>
 
-Solution heuristica_5(const GAPInstance &instance, int cmax){
+Solution heuristica_5(const GAPInstance &instance, double cmax){
     // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
-    solucion.costo_total = 0;
+    solucion.costo_total = 0.0;
 
     // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
@@ -15,7 +15,7 @@ Solution heuristica_5(const GAPInstance &instance, int cmax){
     std::vector<int> asignaciones_vendedores(instance.n);
 
     // creamos una copia de las capacidades de la instancia de GAP provista
-    std::vector<int> capacidades_residuales = instance.capacidades;
+    std::vector<double> capacidades_residuales = instance.capacidades;
 
     // creamos un vector vendedores_disponibles para saber qué vendedores aún no han sido asignados
     std::vector<bool> vendedores_disponibles(instance.n, true);
@@ -26,7 +26,7 @@ Solution heuristica_5(const GAPInstance &instance, int cmax){
     while (contador <= cota_superior){
         for (int i = 0; i < instance.m; i++){
             int vendedor_minimo = -1;
-            int costo_minimo = INT_MAX;
+            double costo_minimo = std::numeric_limits<double>::infinity();
             for (int j = 0; j < instance.n; j++){
                 if (vendedores_disponibles[j]  && costo_minimo > instance.costos[i][j] && capacidades_residuales[i] >= instance.demandas[i][j]){
                     vendedor_minimo = j;

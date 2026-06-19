@@ -6,25 +6,25 @@
 
 struct GAPInstance {
 
-    int m; // depositos
+    int m; // depósitos
     int n; // vendedores
 
     // costos[i][j]
-    std::vector<std::vector<int>> costos;
+    std::vector<std::vector<double>> costos;
 
     // demandas[i][j]
-    std::vector<std::vector<int>> demandas;
+    std::vector<std::vector<double>> demandas;
 
     // capacidad[i]
-    std::vector<int> capacidades;
+    std::vector<double> capacidades;
 };
 
 GAPInstance read_instance(const std::string& filename);
 
-int costo_max(
+double costo_max(
     const std::vector<int>& N,
     const std::vector<int>& M,
-    const std::vector<std::vector<int>>& costos
+    const std::vector<std::vector<double>>& costos
 );
 
 #endif

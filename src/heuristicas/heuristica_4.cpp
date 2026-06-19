@@ -3,11 +3,11 @@
 #include <map>
 #include <utility>
 
-Solution heuristica_4(const GAPInstance &instance, int cmax) {
+Solution heuristica_4(const GAPInstance &instance, double cmax) {
     // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
-    solucion.costo_total = 0;
+    solucion.costo_total = 0.0;
 
     // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
@@ -16,17 +16,17 @@ Solution heuristica_4(const GAPInstance &instance, int cmax) {
     std::vector<int> asignaciones_vendedores(instance.n);
 
     // creamos una copia de las capacidades de la instancia de GAP provista
-    std::vector<int> capacidades_residuales = instance.capacidades;
+    std::vector<double> capacidades_residuales = instance.capacidades;
 
     // creamos un vector vendedores_disponibles para saber qué vendedores aún no han sido asignados
     std::vector<bool> vendedores_disponibles(instance.n, true);
 
     // creamos un map que almacena el ratio costo-demanda asociado a cada par depósito-vendedor
-    std::map<std::pair<int, int>, float> ratios_costo_demanda;
+    std::map<std::pair<int, int>, double> ratios_costo_demanda;
     for (int j = 0; j < instance.n; j++) {
         for (int i = 0; i < instance.m; i++) {
             // asumo que las demandas son siempre no nulas
-            ratios_costo_demanda[{i,j}] = static_cast<float>(instance.costos[i][j]) / instance.demandas[i][j];
+            ratios_costo_demanda[{i,j}] = instance.costos[i][j] / instance.demandas[i][j];
         }
     }
 
@@ -52,7 +52,7 @@ Solution heuristica_4(const GAPInstance &instance, int cmax) {
     // concretamos las asignaciones según el orden de ratio
     for (int k=0; k<orden_asignacion.size(); k++) {
         if (vendedores_disponibles[orden_asignacion[k].second] &&
-            capacidades_residuales[orden_asignacion[k].first] - instance.demandas[orden_asignacion[k].first][orden_asignacion[k].second] >= 0) {
+            capacidades_residuales[orden_asignacion[k].first] - instance.demandas[orden_asignacion[k].first][orden_asignacion[k].second] >= 0.0) {
 
             // concretamos la asignación
             asignaciones[orden_asignacion[k].first].push_back(orden_asignacion[k].second);

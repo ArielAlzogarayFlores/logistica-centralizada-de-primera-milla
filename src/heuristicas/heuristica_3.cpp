@@ -1,14 +1,13 @@
 #include <limits>
-#include <limits.h>
 #include "heuristica_3.h"
 #include <algorithm>
 #include <vector>
 
-Solution heuristica_3(const GAPInstance &instance, int cmax) {
+Solution heuristica_3(const GAPInstance &instance, double cmax) {
     // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
-    solucion.costo_total = 0;
+    solucion.costo_total = 0.0;
 
     // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
@@ -17,13 +16,13 @@ Solution heuristica_3(const GAPInstance &instance, int cmax) {
     std::vector<int> asignaciones_vendedores(instance.n);
 
     // creamos una copia de las capacidades de la instancia de GAP provista
-    std::vector<int> capacidades_residuales = instance.capacidades;
+    std::vector<double> capacidades_residuales = instance.capacidades;
 
     // creamos un vector vendedores_disponibles para saber qué vendedores aún no han sido asignados
     std::vector<bool> vendedores_disponibles(instance.n, true);
 
     // creamos un vector promedio_costo_vendedores para almacenar el costo promedio de cada vendedor
-    std::vector<float> promedio_costo_vendedores = calcular_promedios(instance, capacidades_residuales, vendedores_disponibles);
+    std::vector<double> promedio_costo_vendedores = calcular_promedios(instance, capacidades_residuales, vendedores_disponibles);
 
     // por cada vendedor j
     for (int j=0; j<instance.n; j++) {
@@ -35,12 +34,12 @@ Solution heuristica_3(const GAPInstance &instance, int cmax) {
         int deposito_minimo = -1;
 
         // consecuencia de lo anterior: el costo (distancia) es infinito
-        int costo_minimo = INT_MAX;
+        double costo_minimo = std::numeric_limits<double>::infinity();
 
         // buscamos el depósito más cercano al que podamos asignar al vendedor de promedio de costo mínimo
         for (int i=0; i<instance.m; i++) {
             // verificamos que sea el depósito más cercano y que sea asignable (o sea, factible)
-            if (instance.costos[i][vendedor_promedio_minimo] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][vendedor_promedio_minimo] >= 0) {
+            if (instance.costos[i][vendedor_promedio_minimo] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][vendedor_promedio_minimo] >= 0.0) {
                 // si verifica la condición se actualiza el depósito mínimo del vendedor de promedio mínimo y el costo asociado
                 deposito_minimo = i;
                 costo_minimo = instance.costos[i][vendedor_promedio_minimo];
@@ -75,15 +74,15 @@ Solution heuristica_3(const GAPInstance &instance, int cmax) {
     return solucion;
 }
 
-std::vector<float> calcular_promedios(const GAPInstance &instance, const std::vector<int> &capacidades_residuales, const std::vector<bool> &vendedores_disponibles) {
+std::vector<double> calcular_promedios(const GAPInstance &instance, const std::vector<double> &capacidades_residuales, const std::vector<bool> &vendedores_disponibles) {
     // los promedios empiezan siendo cotas máximas para aquellos vendedores no disponibles o donde no podamos calcular el promedio
-    std::vector<float> promedios(instance.n, std::numeric_limits<float>::infinity());
+    std::vector<double> promedios(instance.n, std::numeric_limits<float>::infinity());
 
     // para cada vendedor j disponible se calcula su promedio de costos
     for (int j=0; j<instance.n; j++) {
         if (vendedores_disponibles[j] == false) continue;
-        float sum_total = 0;
-        float cant = 0;
+        double sum_total = 0.0;
+        int cant = 0;
         for (int i=0; i<instance.m; i++) {
             if (instance.demandas[i][j] <= capacidades_residuales[i]) {
                 sum_total += instance.costos[i][j];

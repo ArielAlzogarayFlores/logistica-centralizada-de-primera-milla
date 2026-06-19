@@ -13,11 +13,11 @@ GAPInstance read_instance(const std::string& filename){
     file >> instance.m >> instance.n;
     instance.costos.resize(
         instance.m,
-        std::vector<int>(instance.n)
+        std::vector<double>(instance.n)
     );
     instance.demandas.resize(
         instance.m,
-        std::vector<int>(instance.n)
+        std::vector<double>(instance.n)
     );
     instance.capacidades.resize(instance.m);
 
@@ -40,16 +40,21 @@ GAPInstance read_instance(const std::string& filename){
         file >> instance.capacidades[i];
     }
 
+    // por si hay un error de lectura
+    if (file.fail()) {
+        throw std::runtime_error("Error parseando instancia");
+    }
+
     return instance;
 }
 
 
-int costo_max(
+double costo_max(
     const std::vector<int>& N,
     const std::vector<int>& M,
-    const std::vector<std::vector<int>>& costos
+    const std::vector<std::vector<double>>& costos
 ){
-    int res = 0;
+    double res = 0.0;
     for(int i=0;i<M.size();i++){
         for(int j=0;j<N.size();j++){
             if(costos[i][j] > res){

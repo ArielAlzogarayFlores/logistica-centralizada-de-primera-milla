@@ -1,12 +1,12 @@
-#include <limits.h>
+#include <limits>
 #include "heuristica_2.h"
 #include <vector>
 
-Solution heuristica_2 (const GAPInstance& instance, int cmax) {
+Solution heuristica_2 (const GAPInstance& instance, double cmax) {
     // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
-    solucion.costo_total = 0;
+    solucion.costo_total = 0.0;
 
     // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
@@ -15,7 +15,7 @@ Solution heuristica_2 (const GAPInstance& instance, int cmax) {
     std::vector<int> asignaciones_vendedores(instance.n);
 
     // creamos una copia de las capacidades de la instancia de GAP provista
-    std::vector<int> capacidades_residuales = instance.capacidades;
+    std::vector<double> capacidades_residuales = instance.capacidades;
 
     // creamos un vector vendedores_disponibles para saber qué vendedores aún no han sido asignados
     std::vector<bool> vendedores_disponibles(instance.n, true);
@@ -29,11 +29,11 @@ Solution heuristica_2 (const GAPInstance& instance, int cmax) {
             int vendedor_minimo = -1;
 
             // consecuencia de lo anterior: el costo (distancia) es infinito
-            int costo_minimo = INT_MAX;
+            double costo_minimo = std::numeric_limits<double>::infinity();
 
             for (int j=0; j<vendedores_disponibles.size(); j++) {
                 // verificamos que sea el vendedor disponible más cercano y que sea asignable (o sea, factible)
-                if (vendedores_disponibles[j] && instance.costos[i][j] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][j] >= 0) {
+                if (vendedores_disponibles[j] && instance.costos[i][j] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][j] >= 0.0) {
                     // si verifica la condición se actualiza el vendedor mínimo de i y el costo asociado
                     vendedor_minimo = j;
                     costo_minimo = instance.costos[i][j];
