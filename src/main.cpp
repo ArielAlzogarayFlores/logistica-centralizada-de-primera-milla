@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #include "utils/gap_instance.h"
 #include "utils/io.h"
@@ -31,8 +32,20 @@ int main(int argc,char** argv){
         for(int i=0; i<instance.n; i++) N[i]=i;
         for(int i=0; i<instance.m; i++) M[i]=i;
         double cmax = costo_max(N,M,instance.costos);
+
+        // Configuramos e iniciamos reloj.
+        using Clock = std::chrono::steady_clock;
+        auto inicio = Clock::now();
+
+        // correemos algoritmo
         auto solution = run_algorithm(algorithm,instance,cmax);
-        save_solution(output_file, input_file, algorithm, solution, instance);
+
+        // Finalizamos reloj, calculamos el tiempo total e imprimimos el resultado.
+        auto fin = Clock::now();
+        double total = std::chrono::duration<double>(fin - inicio).count();
+
+        // guardamos solución
+        save_solution(output_file, input_file, algorithm, solution, instance, total);
 
         std::cout
             << "\nInstancia cargada\n"
@@ -44,7 +57,7 @@ int main(int argc,char** argv){
             << cmax
             << "\nOutput: ./output/"
             << output_file
-            << "\n";
+            << "\nTiempo total (en segundos): " << total << "\n";
     }
     // si ocurre un error lo imprimimos en terminal
     catch(std::exception& e){

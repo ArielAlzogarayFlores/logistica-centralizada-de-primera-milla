@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <limits>
 #include <random>
+#include <chrono>
 
 #include "../busqueda-local/operador_1.h"
 #include "../busqueda-local/operador_2.h"

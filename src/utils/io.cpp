@@ -6,7 +6,8 @@ void save_solution(
     const std::string& input,
     const std::string& algoritmo,
     const Solution& solution,
-    const GAPInstance& instance
+    const GAPInstance& instance,
+    const double& time
 ){
     // siempre guardamos las salidas en la carpeta /output
     const std::string output_dir = "./output";
@@ -20,6 +21,7 @@ void save_solution(
     file << "Costo total: " << solution.costo_total << "\n";
     file << "Solución parcial: " << (solution.parcial() ? "SÍ" : "NO") << "\n";
     file << "Cantidad de depósitos: " << instance.m << "\n";
+    file << "Tiempo de ejecución (en segundos): " << time << "\n";
     if (solution.parcial()) {
         file << "Cantidad de vendedores (sin asignar)/asignados: (" << solution.vendedores_sin_asignar << ")/" << instance.n << "\n";
     }
