@@ -14,7 +14,7 @@ Solution operador_2(const GAPInstance& instance, int cmax) {
         for (int j = 0; j < instance.n && not mejora_hallada; j++) {
             for (int i = 0; i < instance.m && not mejora_hallada; i++) {
                 // debemos hacer el relocate sobre un depósito distinto al que ya se encuentra el vendedor
-                if (solucion.asignaciones_vendedores[j] == i) continue;
+                if (solucion.asignaciones_vendedores[j] == i || solucion.asignaciones_vendedores[j] == -1) continue;
 
                 // actualizamos la solución siempre que el relocate resulte en una reducción de costos factible
                 if (relocate_op(solucion, instance, i, j)) {
