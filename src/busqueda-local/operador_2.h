@@ -6,6 +6,6 @@
 
 Solution operador_2(const GAPInstance& instance, int cmax);
 
-bool relocate_op (const GAPInstance& instance, int cmax);
+bool relocate_op (Solution &solucion, const GAPInstance& instance, int i, int j);
 
 #endif

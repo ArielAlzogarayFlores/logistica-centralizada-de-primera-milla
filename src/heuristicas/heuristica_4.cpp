@@ -81,5 +81,4 @@ Solution heuristica_4(const GAPInstance &instance, int cmax) {
     // aplicamos la penalización (si es que la hay)
     solucion.costo_total += (3*cmax)*solucion.vendedores_sin_asignar;
     return solucion;
-
 }

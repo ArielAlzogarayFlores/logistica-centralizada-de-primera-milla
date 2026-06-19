@@ -5,6 +5,7 @@
 #include "../heuristicas/heuristica_4.h"
 #include "../heuristicas/heuristica_5.h"
 #include "../busqueda-local/operador_1.h"
+#include "../busqueda-local/operador_2.h"
 #include <stdexcept>
 
 Solution run_algorithm(
@@ -29,6 +30,9 @@ Solution run_algorithm(
     }
     if(algorithm=="operador_1"){
         return operador_1(instance,cmax);
+    }
+    if(algorithm=="operador_2"){
+        return operador_2(instance,cmax);
     }
     if(algorithm=="meta1"){
         // return meta(instance,cmax);
