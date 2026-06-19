@@ -1,6 +1,7 @@
 #include "algorithm_runner.h"
 #include "../heuristicas/heuristica_1.h"
 #include "../heuristicas/heuristica_2.h"
+#include "../heuristicas/heuristica_3.h"
 #include "../heuristicas/heuristica_5.h"
 #include "../busqueda-local/operador_1.h"
 #include <stdexcept>
@@ -15,6 +16,9 @@ Solution run_algorithm(
     }
     if(algorithm=="heuristica_2"){
         return heuristica_2(instance,cmax);
+    }
+    if(algorithm=="heuristica_3"){
+        return heuristica_3(instance,cmax);
     }
     if(algorithm=="heuristica_5"){
         return heuristica_5(instance,cmax);

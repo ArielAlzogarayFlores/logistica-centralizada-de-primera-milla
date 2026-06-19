@@ -1,105 +1,99 @@
+#include <limits>
 #include <limits.h>
 #include "heuristica_3.h"
+#include <algorithm>
 #include <vector>
 
-Solution heuristica_3(const GAPInstance &instance, int cmax)
-{
-
+Solution heuristica_3(const GAPInstance &instance, int cmax) {
+    // creamos una solución vacía
     Solution solucion;
     solucion.vendedores_sin_asignar = 0;
     solucion.costo_total = 0;
-    std::vector<int> promedios;
+
+    // creamos asignaciones para guardar las decisiones que vayamos tomando según la heurística (constructiva)
     std::vector<std::vector<int>> asignaciones(instance.m);
+
+    // en paralelo hacemos algo similar pero para los vendedores con sus depósitos asignados
+    std::vector<int> asignaciones_vendedores(instance.n);
+
+    // creamos una copia de las capacidades de la instancia de GAP provista
     std::vector<int> capacidades_residuales = instance.capacidades;
-    std::vector<int> marcado(instance.n, 0);
-    for (int j = 0; j < instance.n; j++)
-    {
-        float prom_j = 0;
-        int a = 0;
-        for (int i = 0; i < instance.m; i++)
-        {
-            if (capacidades_residuales[i] >= instance.demandas[i][j])
-            {
-                prom_j += instance.costos[i][j];
-                a += 1;
+
+    // creamos un vector vendedores_disponibles para saber qué vendedores aún no han sido asignados
+    std::vector<bool> vendedores_disponibles(instance.n, true);
+
+    // creamos un vector promedio_costo_vendedores para almacenar el costo promedio de cada vendedor
+    std::vector<float> promedio_costo_vendedores = calcular_promedios(instance, capacidades_residuales, vendedores_disponibles);
+
+    // por cada vendedor j
+    for (int j=0; j<instance.n; j++) {
+        // buscamos al vendedor cuyo promedio sea mínimo
+        auto it = std::min_element(promedio_costo_vendedores.begin(), promedio_costo_vendedores.end());
+        int vendedor_promedio_minimo = it - promedio_costo_vendedores.begin();
+
+        // empezamos sin depósito mínimo (los vendedores con depósito -1 son aquellos sin asignar)
+        int deposito_minimo = -1;
+
+        // consecuencia de lo anterior: el costo (distancia) es infinito
+        int costo_minimo = INT_MAX;
+
+        // buscamos el depósito más cercano al que podamos asignar al vendedor de promedio de costo mínimo
+        for (int i=0; i<instance.m; i++) {
+            // verificamos que sea el depósito más cercano y que sea asignable (o sea, factible)
+            if (instance.costos[i][vendedor_promedio_minimo] < costo_minimo && capacidades_residuales[i] - instance.demandas[i][vendedor_promedio_minimo] >= 0) {
+                // si verifica la condición se actualiza el depósito mínimo del vendedor de promedio mínimo y el costo asociado
+                deposito_minimo = i;
+                costo_minimo = instance.costos[i][vendedor_promedio_minimo];
             }
         }
-        if (a = 0)
-        {
-            promedios.push_back(prom_j);
-        }
-        else
-        {
-            prom_j = prom_j / a;
-            promedios.push_back(prom_j);
+
+        // si tras evaluar sobre todos los depósitos, se halla un depósito asignable i más cercano para el vendedor de promedio mínimo,
+        // se toma la decisión de asignarlo dicho vendedor a ese depósito
+        if (deposito_minimo != -1) {
+            // concretamos la asignación
+            asignaciones[deposito_minimo].push_back(vendedor_promedio_minimo);
+            asignaciones_vendedores[vendedor_promedio_minimo] = deposito_minimo;
+
+            // actualizamos las capacidades residuales, el costo acumulado y los promedios de los vendedores aún disponibles
+            capacidades_residuales[deposito_minimo] = capacidades_residuales[deposito_minimo] - instance.demandas[deposito_minimo][vendedor_promedio_minimo];
+            solucion.costo_total += instance.costos[deposito_minimo][vendedor_promedio_minimo];
+            vendedores_disponibles[vendedor_promedio_minimo] = false;
+            promedio_costo_vendedores = calcular_promedios(instance, capacidades_residuales, vendedores_disponibles); // se recalculan los promedios
+        } else { // en caso contrario se lo cuenta al vendedor de promedio mínimo como un vendedor sin asignar
+            solucion.vendedores_sin_asignar++;
+            asignaciones_vendedores[vendedor_promedio_minimo] = -1;
         }
     }
 
-    int j = 0;
+    // completamos la solución
+    solucion.asignaciones = asignaciones;
+    solucion.asignaciones_vendedores = asignaciones_vendedores;
+    solucion.capacidades_residuales = capacidades_residuales;
 
-    while (j < instance.n)
-    {
-        int min_prom = INT_MAX;
-        int pos_min = -1;
-        for (int k = 0; k < instance.n; k++)
-        {
-            if (promedios[k] < min_prom && marcado[k] == 0)
-            {
-                min_prom = promedios[k];
-                pos_min = k;
-            }
-        }
-
-        int m_min = -1;
-        int c_min = INT_MAX;
-        for (int i = 0; i < instance.m; i++)
-        {
-            if (c_min > instance.costos[i][pos_min] && capacidades_residuales[i] >= instance.demandas[i][pos_min])
-            {
-                m_min = i;
-                c_min = instance.costos[i][pos_min];
-            }
-        }
-        if (m_min != -1)
-        {
-            asignaciones[m_min].push_back(pos_min);
-            capacidades_residuales[m_min] = capacidades_residuales[m_min] - instance.demandas[m_min][pos_min];
-        }
-        else
-        {
-            solucion.vendedores_sin_asignar += 1;
-        }
-        marcado[pos_min] = 1;
-        j += 1;
-
-        for (int c = 0; c < instance.n; c++)
-        {
-            if (marcado[c] == 0)
-            {
-                float prom_c = 0;
-                int a = 0;
-                for (int i = 0; i < instance.m; i++)
-                {
-                    if (capacidades_residuales[i] >= instance.demandas[i][c])
-                    {
-                        prom_c += instance.costos[i][c];
-                        a += 1;
-                    }
-                }
-                if (a == 0)
-                {
-                    prom_c = 0;
-                }
-                else
-                {
-                    prom_c = prom_c / a;
-                }
-                promedios[c] = prom_c;
-            }
-        }
-        solucion.asignaciones = asignaciones;
-        solucion.costo_total += (3 * cmax) * solucion.vendedores_sin_asignar;
-    }
-
+    // aplicamos la penalización (si es que la hay)
+    solucion.costo_total += (3*cmax)*solucion.vendedores_sin_asignar;
     return solucion;
+}
+
+std::vector<float> calcular_promedios(const GAPInstance &instance, const std::vector<int> &capacidades_residuales, const std::vector<bool> &vendedores_disponibles) {
+    // los promedios empiezan siendo cotas máximas para aquellos vendedores no disponibles o donde no podamos calcular el promedio
+    std::vector<float> promedios(instance.n, std::numeric_limits<float>::infinity());
+
+    // para cada vendedor j disponible se calcula su promedio de costos
+    for (int j=0; j<instance.n; j++) {
+        if (vendedores_disponibles[j] == false) continue;
+        float sum_total = 0;
+        float cant = 0;
+        for (int i=0; i<instance.m; i++) {
+            if (instance.demandas[i][j] <= capacidades_residuales[i]) {
+                sum_total += instance.costos[i][j];
+                cant++;
+            }
+        }
+        // siempre y cuando se pueda calcular el promedio para el vendedor j se actualiza en la lista de promedios
+        if (cant != 0) {
+            promedios[j] = sum_total/cant;
+        }
+    }
+    return promedios;
 }
