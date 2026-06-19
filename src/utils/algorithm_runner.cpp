@@ -6,6 +6,7 @@
 #include "../heuristicas/heuristica_5.h"
 #include "../busqueda-local/operador_1.h"
 #include "../busqueda-local/operador_2.h"
+#include "../metaheuristicas/grasp.h"
 #include <stdexcept>
 
 Solution run_algorithm(
@@ -34,8 +35,8 @@ Solution run_algorithm(
     if(algorithm=="operador_2"){
         return operador_2(instance,cmax);
     }
-    if(algorithm=="meta1"){
-        // return meta(instance,cmax);
+    if(algorithm=="grasp"){
+        return grasp(instance,cmax, 20, 1.1);
     }
     throw std::runtime_error(
         "Algoritmo inexistente"

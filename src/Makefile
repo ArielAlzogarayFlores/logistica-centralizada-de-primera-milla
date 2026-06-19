@@ -13,7 +13,8 @@ heuristicas/heuristica_3.cpp\
 heuristicas/heuristica_4.cpp\
 heuristicas/heuristica_5.cpp\
 busqueda-local/operador_1.cpp \
-busqueda-local/operador_2.cpp
+busqueda-local/operador_2.cpp \
+metaheuristicas/grasp.cpp
 
 
 OBJ = $(SRC:.cpp=.o)
