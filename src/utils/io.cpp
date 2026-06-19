@@ -3,7 +3,10 @@
 
 void save_solution(
     const std::string& output,
-    const Solution& solution
+    const std::string& input,
+    const std::string& algoritmo,
+    const Solution& solution,
+    const GAPInstance& instance
 ){
     // siempre guardamos las salidas en la carpeta /output
     const std::string output_dir = "./output";
@@ -12,10 +15,13 @@ void save_solution(
     // iniciamos un flujo para escribir el archivo sobre la ruta output_file
     std::ofstream file(output_file);
     // escribimos en el archivo de salida los datos de salida y las asignaciones que resolvio el algoritmo
+    file << "Instancia: " << input << "\n";
+    file << "Algoritmo: " << algoritmo << "\n";
     file << "Costo total: " << solution.costo_total << "\n";
     file << "Solución parcial: " << (solution.parcial() ? "SÍ" : "NO") << "\n";
+    file << "Cantidad de depósitos: " << instance.m << "\n";
     if (solution.parcial()) {
-        file << "Cantidad de vendedores sin asignar:" << solution.vendedores_sin_asignar << "\n";
+        file << "Cantidad de vendedores (sin asignar)/asignados: (" << solution.vendedores_sin_asignar << ")/" << instance.n << "\n";
     }
     for(int i=0; i<asignaciones.size(); i++){
         file << "Depósito ("<< i << "): ";

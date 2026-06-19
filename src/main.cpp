@@ -32,7 +32,7 @@ int main(int argc,char** argv){
         for(int i=0; i<instance.m; i++) M[i]=i;
         int cmax = costo_max(N,M,instance.costos);
         auto solution = run_algorithm(algorithm,instance,cmax);
-        save_solution(output_file, solution);
+        save_solution(output_file, input_file, algorithm, solution, instance);
 
         std::cout
             << "\nInstancia cargada\n"
