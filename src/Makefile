@@ -11,7 +11,6 @@ heuristicas/heuristica_1.cpp \
 heuristicas/heuristica_2.cpp \
 heuristicas/heuristica_3.cpp\
 heuristicas/heuristica_4.cpp\
-heuristicas/heuristica_5.cpp\
 busqueda-local/operador_1.cpp \
 busqueda-local/operador_2.cpp \
 metaheuristicas/grasp.cpp
