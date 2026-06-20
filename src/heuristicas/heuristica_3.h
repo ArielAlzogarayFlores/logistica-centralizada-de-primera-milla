@@ -3,10 +3,7 @@
 
 #include "../utils/gap_instance.h"
 #include "../utils/solution.h"
-#include <vector>
 
 Solution heuristica_3(const GAPInstance &instance, double cmax);
-
-std::vector<double> calcular_promedios(const GAPInstance &instance, const std::vector<double>& capacidades_residuales, const std::vector<bool>& vendedores_disponibles);
 
 #endif

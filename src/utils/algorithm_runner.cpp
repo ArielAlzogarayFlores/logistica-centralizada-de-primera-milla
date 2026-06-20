@@ -1,7 +1,7 @@
 #include "algorithm_runner.h"
 #include "../heuristicas/heuristica_1.h"
-#include "../heuristicas/heuristica_2.h"
 #include "../heuristicas/heuristica_3.h"
+#include "../heuristicas/heuristica_2.h"
 #include "../heuristicas/heuristica_4.h"
 #include "../busqueda-local/operador_1.h"
 #include "../busqueda-local/operador_2.h"
@@ -32,7 +32,7 @@ Solution run_algorithm(
         return operador_2(instance,cmax);
     }
     if(algorithm=="grasp"){
-        return grasp(instance,cmax, 20, 1.1);
+        return grasp(instance,cmax, 20, 0.75);
     }
     throw std::runtime_error(
         "Algoritmo inexistente"

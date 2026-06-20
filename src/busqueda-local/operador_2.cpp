@@ -1,9 +1,9 @@
 #include "operador_2.h"
-#include "../heuristicas/heuristica_2.h"
+#include "../heuristicas/heuristica_3.h"
 
 Solution operador_2(const GAPInstance& instance, double cmax) {
     // generemos una solución factible
-    Solution solucion = heuristica_2(instance, cmax);
+    Solution solucion = heuristica_3(instance, cmax);
 
     // mientras podamos mejorar la solución actual
     bool solucion_mejorable = true;
